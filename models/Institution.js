@@ -17,11 +17,7 @@ const InstitutionSchema = new mongoose.Schema({
     emailDomain:{
         type:String,
         required: true
-    },
-    books:[{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:'Books'
-    }]
+    }
 })
 
 const Institution = mongoose.model('Institution',InstitutionSchema);

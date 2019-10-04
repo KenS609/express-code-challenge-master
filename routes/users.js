@@ -3,6 +3,9 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const jsend = require('jsend');
+const { ensureAuthenticated } = require('../auth/auth');
+
+
 //Database
 const User = require('../models/Users');
 const Institution = require('../models/Institution');
@@ -103,20 +106,24 @@ router.post('/signin',(req,res,next)=>{
 });
 
 // GET with Jsend Framework
-router.get('/login',(req,res)=>{
+router.get('/login',ensureAuthenticated,(req,res)=>{
     res.send(jsend.success({username:req.user.name}));
 });
 
 
 //GET Books
-router.get('/login/books',(req,res)=>{
+router.get('/login/books',ensureAuthenticated,(req,res,next)=>{
 
     User.findOne({name:req.user.name})
         .then(user=>{
             Institution.findOne({_id:user.institute})
                 .then(inst =>{
-                    getInstituteWithBooks(inst.emailDomain);
-                    res.send(jsend.success({books: inst.books}));
+                    Book.find({institute:inst._id})
+                        .then(books =>{
+                            res.send(books);
+                        })
+                        .catch(err=> console.log(err));
+                    
                 })
                 .catch(err=>console.log(err));
         })
@@ -125,21 +132,16 @@ router.get('/login/books',(req,res)=>{
 });
 
 
-function getInstituteWithBooks(domain){
-    return Institution.findOne({emailDomain:domain})
-            .populate('books').exec((err,books)=>{
-                console.log("Populated Insitute "+ books);              
-            });
-};
 
+  
 
 
 //creating institute & books model
 
 // const institute = new Institution({
-//     name:'Chicago School',
-//     url:'http://www.chicago.com',
-//     emailDomain: 'chicago.com'
+//     name:'Virginia University',
+//     url:'http://www.va.com',
+//     emailDomain: 'va.com'
 // });
 
 // institute.save((err)=>{
