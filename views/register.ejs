@@ -1,0 +1,41 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+        
+    <div class="container">
+        <h3>Register</h3>
+    
+     <% include ./partials/messages.ejs %> 
+     <form action="/users/create" method="POST">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input style="width: 300px;" type="text" class="form-control" name="name" placeholder="Enter name" value="<%= typeof name!= 'undefined' ? name :'' %>"> 
+
+            <label for="Emal">Email</label>
+            <input style="width: 300px;" type="email" class="form-control" name="email" placeholder="Enter Email" value="<%= typeof email != 'undefined' ? email :'' %>">
+
+            <label for="role">Role</label>
+            <select style="width: 300px;" name="role" class="form-control" value="<%= typeof role != 'undefined' ? role :'' %>">
+                
+                <option value="Student">Student</option>
+                <option value="Academic">Academic</option>
+                <option value="Administrator">Administrator</option>
+            </select>
+
+            <label for="password">Password</label>
+            <input style="width: 300px;" type="password" name="password" class="form-control" placeholder="Enter Password" value="<%= typeof password != 'undefined' ? password :'' %>">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Register</button>
+      
+    </form>
+    </div>
+</body>
+</html>
